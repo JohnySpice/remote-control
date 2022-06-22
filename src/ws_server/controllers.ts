@@ -16,6 +16,10 @@ export function handler(message: RawData) {
       return getMousePosition();
     case 'draw_circle':
       return drawCircle(+param1);
+    case 'draw_rectangle':
+      return drawRectangle(+param1, +param2);
+    case 'draw_square':
+      return drawRectangle(+param1);
   }
 }
 
@@ -46,4 +50,25 @@ function drawCircle(radius: number) {
     robot.moveMouse(x, y);
   }
   robot.mouseToggle('up');
+}
+
+function drawRectangle(width: number, height: number = 0) {
+  const step = 1;
+  const xLength = width;
+  const yLength = height || width;
+  robot.mouseToggle('down');
+  moveMouseToLength(xLength, 'x', step);
+  moveMouseToLength(yLength || width, 'y', step);
+  moveMouseToLength(xLength, 'x', -step);
+  moveMouseToLength(yLength, 'y', -step);
+  robot.mouseToggle('up');
+}
+
+function moveMouseToLength(length: number, axios: 'x' | 'y', step: number) {
+  for (let i = 0; i < length; i++) {
+    const mousePos = robot.getMousePos();
+    const x = axios === 'x' ? mousePos.x + step : mousePos.x;
+    const y = axios === 'y' ? mousePos.y + step : mousePos.y;
+    robot.moveMouse(x, y);
+  }
 }
