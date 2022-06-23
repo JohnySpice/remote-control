@@ -1,4 +1,4 @@
-import { WebSocketServer } from 'ws';
+import { AddressInfo, WebSocketServer } from 'ws';
 import { handler } from './controllers';
 import { Server } from 'http';
 
@@ -8,13 +8,14 @@ export function startServer(server: Server) {
   });
   console.log();
   wss.on('connection', ws => {
-    ws.on('message', message => {
+    ws.on('message', async message => {
       console.log(message.toString());
       const [command] = message.toString().split(' ');
-      const result = handler(message);
+      const result = await handler(message);
       ws.send(`${command} ${result ?? ''}`);
 
     });
   });
-  console.log(`WS server started on the ${process.env.PORT} port`);
+  console.log(`WS server started on the ${(wss.address() as AddressInfo).port} port`);
+  return wss;
 };
