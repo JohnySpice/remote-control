@@ -5,9 +5,8 @@
     "main": "index.js",
     "type": "commonjs",
     "scripts": {
-        "start": "node ./index.js",
+        "start": "tsc && node _build/index.js",
         "start:dev": "nodemon ./index.ts",
-        "start_back:dev": "nodemon ./src/ws_server/server.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Andrei Auchynnikau",
