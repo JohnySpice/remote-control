@@ -1,5 +1,6 @@
 import robot from 'robotjs';
 import { RawData } from 'ws';
+import Jimp from 'jimp';
 
 export function handler(message: RawData) {
   const [command, param1, param2] = message.toString().split(' ');
@@ -20,6 +21,8 @@ export function handler(message: RawData) {
       return drawRectangle(+param1, +param2);
     case 'draw_square':
       return drawRectangle(+param1);
+    case 'prnt_scrn':
+      return screenCapture();
   }
 }
 
@@ -71,4 +74,17 @@ function moveMouseToLength(length: number, axios: 'x' | 'y', step: number) {
     const y = axios === 'y' ? mousePos.y + step : mousePos.y;
     robot.moveMouse(x, y);
   }
+}
+
+async function screenCapture() {
+  const mousePos = robot.getMousePos();
+  const length = 200;
+  const captureObject = robot.screen.capture(mousePos.x - length, mousePos.y - length, length, length);
+  const img = new Jimp({
+    "data": captureObject.image,
+    "width": captureObject.width,
+    "height": captureObject.height
+  });
+  const buffer = await img.getBufferAsync(Jimp.MIME_PNG);
+  return buffer.toString('base64');
 }
