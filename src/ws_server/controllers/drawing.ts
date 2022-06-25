@@ -2,9 +2,9 @@ import robot from "robotjs";
 
 
 function drawCircle(radius: number) {
-  const mousePos = robot.getMousePos();
-  const centerX = mousePos.x - radius;
-  const centerY = mousePos.y;
+  const { x, y } = robot.getMousePos();
+  const centerX = x - radius;
+  const centerY = y;
   const step = 2 * Math.PI / 100;
   robot.mouseToggle('down');
   for (let angle = 0; angle < 2 * Math.PI; angle += step) {
@@ -29,9 +29,9 @@ function drawRectangle(width: number, height: number = 0) {
 
 function moveMouseToLength(length: number, axios: 'x' | 'y', step: number) {
   for (let i = 0; i < length; i++) {
-    const mousePos = robot.getMousePos();
-    const x = axios === 'x' ? mousePos.x + step : mousePos.x;
-    const y = axios === 'y' ? mousePos.y + step : mousePos.y;
+    const { x: mouseX, y: mouseY } = robot.getMousePos();
+    const x = axios === 'x' ? mouseX + step : mouseX;
+    const y = axios === 'y' ? mouseY + step : mouseY;
     robot.moveMouse(x, y);
   }
 }

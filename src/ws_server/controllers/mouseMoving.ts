@@ -1,18 +1,18 @@
 import robot from 'robotjs';
 
-function moveVertical(y: number) {
-  const mousePos = robot.getMousePos();
-  robot.moveMouse(mousePos.x, mousePos.y + y);
+function moveVertical(offset: number) {
+  const { x, y } = robot.getMousePos();
+  robot.moveMouse(x, y + offset);
 }
 
-function moveHorizontal(x: number) {
-  const mousePos = robot.getMousePos();
-  robot.moveMouse(mousePos.x + x, mousePos.y);
+function moveHorizontal(offset: number) {
+  const { x, y } = robot.getMousePos();
+  robot.moveMouse(x + offset, y);
 }
 
 function getMousePosition() {
-  const mousePos = robot.getMousePos();
-  return `${mousePos.x},${mousePos.y}`;
+  const { x, y } = robot.getMousePos();
+  return `${x},${y}`;
 }
 
 export {
